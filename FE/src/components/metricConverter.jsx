@@ -4,8 +4,9 @@ import Form from "./common/form";
 
 class MetricConverter extends Form {
   state = {
-    data: { number: "", units: ["yes", "no", "dsfdasdf"] },
-    errors: {}
+    data: { number: "", units: "" },
+    errors: {},
+    converted: { metric: "", units: "" }
   };
 
   schema = {
@@ -19,17 +20,29 @@ class MetricConverter extends Form {
 
   doSubmit = async () => {
     const { units, number } = this.state.data;
-    console.log(this.state.data);
+
     if (units === "gal") {
-      const metric = number * 3.78541;
+      const metric = Math.round(100 * (number * 3.78541)) / 100;
       const mUnits = "L";
-      console.log(`${metric} ${mUnits}`)
+      const sconv = { metric: metric, units: mUnits };
+      this.setState({ converted: sconv });
+    }
+    if (units === "lbs") {
+      const metric = Math.round(100 * (number * 0.453592)) / 100;
+      const mUnits = "kg";
+      const sconv = { metric: metric, units: mUnits };
+      this.setState({ converted: sconv });
+    }
+    if (units === "mi") {
+      const metric = Math.round(100 * (number * 1.60934)) / 100;
+      const mUnits = "km";
+      const sconv = { metric: metric, units: mUnits };
+      this.setState({ converted: sconv });
     }
   };
 
   render() {
-      var metric = ""
-      var mUnits = ""
+    const { metric, units } = this.state.converted;
 
     return (
       <div>
@@ -43,7 +56,7 @@ class MetricConverter extends Form {
           ])}
           {this.renderButton("Convert")}
         </form>
-        {(mUnits)? <div>{metric} {mUnits}</div>: null}
+        {metric && <div className="display-conv">{`${metric} ${units}`}</div>}
       </div>
     );
   }
