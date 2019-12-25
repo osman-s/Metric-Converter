@@ -18,23 +18,19 @@ class MetricConverter extends Form {
   };
 
   doSubmit = async () => {
+    const { units, number } = this.state.data;
     console.log(this.state.data);
-    // try {
-    //   const { data } = this.state;
-    //   await auth.login(data.username, data.password);
-
-    //   const { state } = this.props.location;
-    //   window.location = state ? state.from.pathname : "/";
-    // } catch (ex) {
-    //   if (ex.response && ex.response.status === 400) {
-    //     const errors = { ...this.state.errors };
-    //     errors.username = ex.response.data;
-    //     this.setState({ errors });
-    //   }
-    // }
+    if (units === "gal") {
+      const metric = number * 3.78541;
+      const mUnits = "L";
+      console.log(`${metric} ${mUnits}`)
+    }
   };
 
   render() {
+      var metric = ""
+      var mUnits = ""
+
     return (
       <div>
         <h1>Metric-Imperial Converter</h1>
@@ -47,6 +43,7 @@ class MetricConverter extends Form {
           ])}
           {this.renderButton("Convert")}
         </form>
+        {(mUnits)? <div>{metric} {mUnits}</div>: null}
       </div>
     );
   }
